@@ -1,59 +1,113 @@
-# AwsService
+# AwsService API Documentation
 
-API Documentation
-1. Discover
-Request
+## Setup:
 
-    Endpoint: /discover
-    Method: POST
+1. **Clone the GitHub repository:**
 
-Body
+    ```bash
+    git clone https://github.com/your-username/your-repo.git
+    cd your-repo
+    ```
 
-    Type: JSON
-    Content:
+2. **Install AWS CLI:**
 
-    json
+   Make sure you have the AWS CLI installed and configured with Access key ID, Secret access key and Region. If not, you can install it by following the instructions [here](https://aws.amazon.com/cli/).
 
-    ["S3","EC2"]
+3. **Update datasource in `application.properties` or add environment variables in a newly created `.env` file in the project root.**
 
+4. **Run the application:**
 
-2. Status
-Request
+    ```bash
+    ./gradlew clean build bootRun
+    ```
 
-    Endpoint: /status/68
-    Method: GET
+---
 
+1. **Discover**
 
-3. DiscoveryResult
-Request
+    - **Request**
+        - **Endpoint:** `/discover`
+        - **Method:** POST
+        - **Body:**
+            ```json
+            ["S3","EC2"]
+            ```
+        - **Example Response:**
+            ```json
+            [
+                65,
+                66
+            ]
+            ```
 
-    Endpoint: /discoveryResult/<S3orEC2>
-    Method: GET
+2. **Status**
 
+    - **Request**
+        - **Endpoint:** `/status/68`
+        - **Method:** GET
+        - **Example Response:**
+            ```json
+            "SUCCESS"
+            ```
 
-4. Bucket - List All
-Request
+3. **DiscoveryResult**
 
-    Endpoint: /discover/files/<bucketname>
-    Method: POST
+    - **Request**
+        - **Endpoint:** `/discoveryResult/<S3orEC2>`
+        - **Method:** GET
+        - **Example Response:**
+            ```json
+            [
+                "bucket3",
+                "bucket4",
+                "bucket2",
+                "bucket1"
+            ]
+            ```
 
+4. **Bucket - List All**
 
-5. Count Files
-Request
+    - **Request**
+        - **Endpoint:** `/discover/files/<bucketname>`
+        - **Method:** POST
 
-    Endpoint: /discover/files/nimesaassignmentbucket2/count
-    Method: GET
+5. **Count Files**
 
-6. Search Files
-Request
+    - **Request**
+        - **Endpoint:** `/discover/files/nimesaassignmentbucket2/count`
+        - **Method:** GET
+        - **Example Response:**
+            ```json
+            4
+            ```
 
-    Endpoint: /search
-    Method: GET
+6. **Search Files**
 
-Parameters
+    - **Request**
+        - **Endpoint:** `/search`
+        - **Method:** GET
+        - **Parameters:**
+            - `BucketName` (String) - The name of the bucket. Example: `bucket1`
+            - `Pattern` (String) - A pattern to search for files. Example: (Leave empty for all files)
 
-    BucketName (String) - The name of the bucket.
-    Example: bucket1
+    - **Example Response (Pattern empty field):**
+        ```json
+        [
+            "New folder/MQL5 Source File.mq5",
+            "New folder/Sample Image.bmp",
+            "New folder/Test-File - 2.txt",
+            "New folder/Test-File - 3.txt",
+            "New folder/Test-File - 4.txt",
+            "New folder/Test-File.txt"
+        ]
+        ```
 
-    Pattern (String) - A pattern to search for files.
-    Example: (Leave empty for all files)
+    - **Example Response (Pattern = .txt):**
+        ```json
+        [
+            "New folder/Test-File - 2.txt",
+            "New folder/Test-File - 3.txt",
+            "New folder/Test-File - 4.txt",
+            "New folder/Test-File.txt"
+        ]
+        ```
